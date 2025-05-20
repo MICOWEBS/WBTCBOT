@@ -17,9 +17,27 @@ export default defineConfig({
     outDir: 'dist',
     assetsDir: 'assets',
     sourcemap: true,
+    chunkSizeWarningLimit: 1000,
     rollupOptions: {
       output: {
-        manualChunks: undefined,
+        manualChunks: {
+          'vendor': [
+            'react',
+            'react-dom',
+            'react-router-dom',
+            '@vitejs/plugin-react'
+          ],
+          'ui': [
+            'tailwindcss',
+            '@headlessui/react',
+            '@heroicons/react'
+          ],
+          'utils': [
+            'axios',
+            'date-fns',
+            'lodash'
+          ]
+        },
         format: 'es',
         entryFileNames: 'assets/[name].[hash].js',
         chunkFileNames: 'assets/[name].[hash].js',
