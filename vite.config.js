@@ -20,23 +20,17 @@ export default defineConfig({
     chunkSizeWarningLimit: 1000,
     rollupOptions: {
       output: {
-        manualChunks: {
-          'vendor': [
-            'react',
-            'react-dom',
-            'react-router-dom',
-            '@vitejs/plugin-react'
-          ],
-          'ui': [
-            'tailwindcss',
-            '@headlessui/react',
-            '@heroicons/react'
-          ],
-          'utils': [
-            'axios',
-            'date-fns',
-            'lodash'
-          ]
+        manualChunks: (id) => {
+          // Create a vendor chunk for node_modules
+          if (id.includes('node_modules')) {
+            if (id.includes('react') || id.includes('react-dom')) {
+              return 'vendor-react';
+            }
+            if (id.includes('@vitejs')) {
+              return 'vendor-vite';
+            }
+            return 'vendor'; // other dependencies
+          }
         },
         format: 'es',
         entryFileNames: 'assets/[name].[hash].js',
