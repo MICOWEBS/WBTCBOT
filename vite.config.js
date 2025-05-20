@@ -7,9 +7,11 @@ export default defineConfig({
   server: {
     port: 5173,
     host: true,
-    headers: {
-      'Content-Type': 'application/javascript',
+    fs: {
+      strict: true,
+      allow: ['..']
     },
+    middlewareMode: false,
   },
   build: {
     outDir: 'dist',
