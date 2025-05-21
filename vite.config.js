@@ -23,32 +23,28 @@ export default defineConfig({
       compress: {
         drop_console: false,
         drop_debugger: true
+      },
+      format: {
+        comments: false
       }
     },
     rollupOptions: {
       output: {
-        manualChunks: (id) => {
-          // Create a vendor chunk for node_modules
+        manualChunks(id) {
           if (id.includes('node_modules')) {
             if (id.includes('react') || id.includes('react-dom')) {
               return 'vendor-react';
             }
-            if (id.includes('@vitejs')) {
+            if (id.includes('@vitejs/plugin-react')) {
               return 'vendor-vite';
             }
-            return 'vendor'; // other dependencies
+            return 'vendor';
           }
         },
         format: 'es',
         entryFileNames: 'assets/[name].[hash].js',
         chunkFileNames: 'assets/[name].[hash].js',
-        assetFileNames: 'assets/[name].[hash].[ext]',
-        generatedCode: {
-          constBindings: true,
-          arrowFunctions: true,
-          objectShorthand: true,
-          reservedNamesAsProps: false
-        }
+        assetFileNames: 'assets/[name].[hash].[ext]'
       },
     },
   },
@@ -59,7 +55,10 @@ export default defineConfig({
   },
   optimizeDeps: {
     include: ['react', 'react-dom'],
-    exclude: ['@vitejs/plugin-react']
+    exclude: ['@vitejs/plugin-react'],
+    esbuildOptions: {
+      target: 'es2020'
+    }
   },
   base: './',
 }); 
