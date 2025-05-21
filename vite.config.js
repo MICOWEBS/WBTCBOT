@@ -18,6 +18,13 @@ export default defineConfig({
     assetsDir: 'assets',
     sourcemap: true,
     chunkSizeWarningLimit: 1000,
+    minify: 'terser',
+    terserOptions: {
+      compress: {
+        drop_console: false,
+        drop_debugger: true
+      }
+    },
     rollupOptions: {
       output: {
         manualChunks: (id) => {
@@ -35,7 +42,13 @@ export default defineConfig({
         format: 'es',
         entryFileNames: 'assets/[name].[hash].js',
         chunkFileNames: 'assets/[name].[hash].js',
-        assetFileNames: 'assets/[name].[hash].[ext]'
+        assetFileNames: 'assets/[name].[hash].[ext]',
+        generatedCode: {
+          constBindings: true,
+          arrowFunctions: true,
+          objectShorthand: true,
+          reservedNamesAsProps: false
+        }
       },
     },
   },
@@ -43,6 +56,10 @@ export default defineConfig({
     alias: {
       '@': path.resolve(__dirname, './src'),
     },
+  },
+  optimizeDeps: {
+    include: ['react', 'react-dom'],
+    exclude: ['@vitejs/plugin-react']
   },
   base: './',
 }); 
